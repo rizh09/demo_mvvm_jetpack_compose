@@ -27,13 +27,13 @@ class QuoteResultViewModel @Inject constructor(private val quoteResultRepository
     //it refers to repository's data, it ensure the UI load data from UI
     val localData = quoteResultRepository.getQuoteResults().asLiveData(Dispatchers.Main)
 
+    //ui state flow
     private fun loadData() {
         // Do an asynchronous operation to fetch users.
         viewModelScope.launch(Dispatchers.IO) {
             // setValue is called from the main thread and
             // the postValue is called from some background thread.
-
-            quoteResultRepository.refreshQuotesResult()
+            quoteResultRepository.refreshLocalDataByAPICall()
         }
     }
 }
