@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Singleton
 
 
@@ -43,7 +44,9 @@ abstract class QuoteResultDatabase : RoomDatabase() {
 @Dao
 interface QuoteResultDao {
     @Query("select * from databasequoteresult")
-    fun getQuoteResult(): LiveData<List<DatabaseQuoteResult>>
+    //we define the flow type in DAO to get live updates e.g quotesResult added, removed or updated.
+    //ref : https://medium.com/androiddevelopers/room-flow-273acffe5b57
+    fun getQuoteResult(): Flow<List<DatabaseQuoteResult>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(quoteResult: List<DatabaseQuoteResult>)
