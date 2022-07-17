@@ -1,5 +1,6 @@
 package com.example.demo_mvvm_jetpack_compose.di.module
 
+import android.util.Log
 import com.example.demo_mvvm_jetpack_compose.Constant
 import com.example.demo_mvvm_jetpack_compose.network.internet.QuoteService
 import dagger.Module
@@ -8,6 +9,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -23,9 +26,10 @@ object NetworkModule {
     //ref: https://developer.android.com/training/dependency-injection/dagger-android
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
@@ -39,6 +43,13 @@ object NetworkModule {
     @Provides
     fun provideDefaultDispatcher(): CoroutineDispatcher{
         return Dispatchers.Default
+    }
+
+    @Provides
+    fun provideOKHttp(): OkHttpClient{
+        val logger = HttpLoggingInterceptor { Log.d("API", it) }
+        logger.setLevel(HttpLoggingInterceptor.Level.BASIC)
+        return OkHttpClient.Builder().addInterceptor(logger).build()
     }
 
 }
