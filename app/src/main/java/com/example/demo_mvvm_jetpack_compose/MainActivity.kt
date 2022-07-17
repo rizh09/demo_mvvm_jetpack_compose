@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //ref : line 70 at https://github.com/google-developer-training/android-kotlin-fundamentals-apps/blob/master/RepositoryPattern/app/src/main/java/com/example/android/devbyteviewer/ui/DevByteFragment.kt
-        quoteResultViewModel.localData.observe(this, Observer<List<Quote.Result>> { it ->
+        quoteResultViewModel.getData().observe(this, Observer<List<Quote.Result>> { it ->
             //update UI
             setContent {
                 Demo_mvvm_jetpack_composeTheme {
