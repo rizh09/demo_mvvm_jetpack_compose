@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.Card
@@ -14,8 +16,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
 import com.example.demo_mvvm_jetpack_compose.model.Quote
 import com.example.demo_mvvm_jetpack_compose.ui.theme.Demo_mvvm_jetpack_composeTheme
@@ -57,16 +64,9 @@ fun MessageGridListWithLazy(quoteResult: List<Quote.Result>) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(128.dp),
         content = {
-            items(quoteResult) { index ->
-                Card(
-                    backgroundColor = Color.Cyan,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth(),
-                    elevation = 8.dp,
-                ) {
-                    MessageRow(number = index.author)
-                }
+            items(quoteResult) { it ->
+                //MessageRow(number = index.author)
+                CardViewRow(quoteResult = it)
             }
         })
 }
@@ -76,15 +76,54 @@ fun MessageRow(number: String) {
     Text(text = "$number")
 }
 
+@Composable
+fun CardViewRow(quoteResult: Quote.Result) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .clickable { },
+        elevation = 10.dp
+    ) {
+        Column(modifier = Modifier.padding(15.dp)) {
+            Text(buildAnnotatedString
+            {
+                withStyle(
+                    style = SpanStyle(fontStyle = FontStyle.Italic)
+                ) {
+                    append(quoteResult.content)
+                }
+            })
+            Text(buildAnnotatedString
+            {
+                withStyle(
+                    style = SpanStyle(fontSize = 12.sp)
+                )
+                {
+                    append(quoteResult.author)
+                }
+            })
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Demo_mvvm_jetpack_composeTheme {
 
-//        val mLists = listOf(
-//            "C++", "C", "C#", "Java", "Kotlin", "Dart", "Python", "Javascript", "SpringBoot",
-//            "XML", "Dart", "Node JS", "Typescript", "Dot Net", "GoLang", "MongoDb",
-//        )
-//        MessageGridListWithLazy(mLists)
+        val sampleData = Quote.Result(
+            id = "1",
+            author = "Chau Ki KO",
+            authorSlug = "a",
+            content = "a",
+            //from string to list
+            tags = "a,b,c".split(","),
+            dateAdded = "asd",
+            dateModified = "asd",
+            length = 123
+        )
+        val mLists = listOf<Quote.Result>(sampleData, sampleData, sampleData, sampleData)
+        MessageGridListWithLazy(mLists)
     }
 }
