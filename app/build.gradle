@@ -106,6 +106,9 @@ dependencies {
 
     //okhttp
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    // Jetpack Compose navigation
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 //
 //    //WorkManager
 //    implementation 'androidx.hilt:hilt-work:1.0.0'

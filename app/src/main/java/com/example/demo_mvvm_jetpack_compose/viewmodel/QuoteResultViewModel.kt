@@ -1,9 +1,11 @@
 package com.example.demo_mvvm_jetpack_compose.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.model.Quote
-import com.example.demo_mvvm_jetpack_compose.repository.QuoteResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
