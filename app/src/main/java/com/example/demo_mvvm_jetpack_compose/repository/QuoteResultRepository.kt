@@ -1,8 +1,5 @@
 package com.example.demo_mvvm_jetpack_compose.repository
 
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.map
 import com.example.demo_mvvm_jetpack_compose.database.asDomainModel
 import com.example.demo_mvvm_jetpack_compose.di.module.QuoteResultDao
 import com.example.demo_mvvm_jetpack_compose.model.Quote
@@ -10,7 +7,6 @@ import com.example.demo_mvvm_jetpack_compose.network.internet.QuoteService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext

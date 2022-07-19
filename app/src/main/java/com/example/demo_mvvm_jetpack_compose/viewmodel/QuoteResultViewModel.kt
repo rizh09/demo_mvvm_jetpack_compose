@@ -17,27 +17,26 @@ import javax.inject.Inject
 //1. How to create instances of type RegistrationViewModel.
 //2. RegistrationViewModel has UserManager as dependency since the constructor takes an instance of UserManager as an argument.
 @HiltViewModel
-class QuoteResultViewModel @Inject constructor(private val getQuoteUseCase: GetQuoteUseCase) :
+class QuoteResultViewModel @Inject constructor(
+    private val getQuoteUseCase: GetQuoteUseCase
+) :
     ViewModel() {
     //https://stackoverflow.com/questions/63146318/how-to-create-and-use-a-room-database-in-kotlin-dagger-hilt
 
-    private val data: MutableLiveData<List<Quote.Result>> by lazy {
+    private val _data: MutableLiveData<List<Quote.Result>> by lazy {
         MutableLiveData<List<Quote.Result>>().also {
             loadData()
         }
     }
 
-    //it refers to repository's data, it ensure the UI load data from UI
+    // it refers to repository's data, it ensure the UI load data from UI
     fun getData(): LiveData<List<Quote.Result>> {
         return getQuoteUseCase.quoteResultList
     }
 
-    //ui state flow
     private fun loadData() {
         // Do an asynchronous operation to fetch users.
         viewModelScope.launch(Dispatchers.IO) {
-            // setValue is called from the main thread and
-            // the postValue is called from some background thread.
             getQuoteUseCase.invoke()
         }
     }

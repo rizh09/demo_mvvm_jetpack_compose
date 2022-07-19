@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,11 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.demo_mvvm_jetpack_compose.data.QuoteResultData
 import com.example.demo_mvvm_jetpack_compose.ui.components.MainTabRow
 import com.example.demo_mvvm_jetpack_compose.ui.list.ListBody
 import com.example.demo_mvvm_jetpack_compose.ui.list.SingleQuoteResultDetail
 import com.example.demo_mvvm_jetpack_compose.ui.theme.Demo_mvvm_jetpack_composeTheme
+import com.example.demo_mvvm_jetpack_compose.viewmodel.QuoteResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,28 +28,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private val quoteResultViewModel: QuoteResultViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MainApp()
         }
-        //ref : line 70 at https://github.com/google-developer-training/android-kotlin-fundamentals-apps/blob/master/RepositoryPattern/app/src/main/java/com/example/android/devbyteviewer/ui/DevByteFragment.kt
-//        quoteResultViewModel.getData().observe(this, Observer<List<Quote.Result>> { it ->
-//            //update UI
-//            setContent {
-//                Demo_mvvm_jetpack_composeTheme {
-//                    Surface(
-//                        modifier = Modifier.fillMaxSize(),
-//                        color = MaterialTheme.colors.background
-//                    ) {
-//                        MessageGridListWithLazy(it)
-//                    }
-//                }
-//            }
-//        })
     }
 }
 
@@ -80,9 +64,8 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
         modifier = modifier
     ) {
         composable(route = MainScreen.QuoteResultList.name) {
-            ListBody(
-                quoteResult = QuoteResultData.quoteResults
-            ) { quoteID ->
+            val viewModel = hiltViewModel<QuoteResultViewModel>()
+            ListBody(viewModel = viewModel) { quoteID ->
                 navigateToSingleQuote(navController = navController, quoteID = quoteID)
             }
         }
@@ -104,9 +87,11 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 //            )
         )
         { entry ->
+            val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
             val quoteID = entry.arguments?.getString("quoteID")
-            val quoteResult = QuoteResultData.getSingleQuoteResult(quoteID)
-            SingleQuoteResultDetail(quoteResult = quoteResult)
+            if (quoteID != null) {
+                SingleQuoteResultDetail(quoteID = quoteID, viewModel = viewModel)
+            }
         }
     }
 }

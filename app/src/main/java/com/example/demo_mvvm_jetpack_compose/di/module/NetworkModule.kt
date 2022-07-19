@@ -41,12 +41,12 @@ object NetworkModule {
 
     //for testing only
     @Provides
-    fun provideDefaultDispatcher(): CoroutineDispatcher{
+    fun provideDefaultDispatcher(): CoroutineDispatcher {
         return Dispatchers.Default
     }
 
     @Provides
-    fun provideOKHttp(): OkHttpClient{
+    fun provideOKHttp(): OkHttpClient {
         val logger = HttpLoggingInterceptor { Log.d("API", it) }
         logger.setLevel(HttpLoggingInterceptor.Level.BASIC)
         return OkHttpClient.Builder().addInterceptor(logger).build()

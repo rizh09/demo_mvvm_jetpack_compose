@@ -10,6 +10,7 @@ class GetQuoteUseCase @Inject constructor(
     private val quoteResultRepository: QuoteResultRepository,
 ) {
     val quoteResultList = quoteResultRepository.getQuoteResults().asLiveData()
+
     suspend operator fun invoke() =
         withContext(Dispatchers.IO) {
             quoteResultRepository.refreshLocalDataByAPICall()

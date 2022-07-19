@@ -1,7 +1,6 @@
 package com.example.demo_mvvm_jetpack_compose.di.module
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.demo_mvvm_jetpack_compose.database.DatabaseQuoteResult
 import dagger.Module
@@ -50,4 +49,7 @@ interface QuoteResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(quoteResult: List<DatabaseQuoteResult>)
+
+//    @Query("select * from databasequoteresult where id = :id")
+//    fun getSingleQuoteResult(id: String): Flow<DatabaseQuoteResult>
 }

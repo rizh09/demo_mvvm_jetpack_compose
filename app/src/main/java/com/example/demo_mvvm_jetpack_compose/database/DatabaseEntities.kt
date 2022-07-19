@@ -65,3 +65,19 @@ fun List<DatabaseQuoteResult>.asDomainModel(): List<Quote.Result> {
     }
 }
 
+
+fun DatabaseQuoteResult.asDomainModel(): Quote.Result {
+    return this.let {
+        Quote.Result(
+            id = it.id,
+            author = it.author,
+            authorSlug = it.authorSlug,
+            content = it.content,
+            //from string to list
+            tags = it.tags.split(","),
+            dateAdded = it.dateAdded,
+            dateModified = it.dateModified,
+            length = it.length
+        )
+    }
+}
