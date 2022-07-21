@@ -114,7 +114,9 @@ dependencies {
 
     // Jetpack Compose navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
-//
+
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
+
 //    //WorkManager
 //    implementation 'androidx.hilt:hilt-work:1.0.0'
 //    // When using Kotlin.

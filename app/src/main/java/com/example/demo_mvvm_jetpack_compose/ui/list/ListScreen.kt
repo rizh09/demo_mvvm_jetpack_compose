@@ -2,16 +2,16 @@ package com.example.demo_mvvm_jetpack_compose.ui.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -20,34 +20,48 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.demo_mvvm_jetpack_compose.model.Quote
+import com.example.demo_mvvm_jetpack_compose.util.LoadingContent
+import com.example.demo_mvvm_jetpack_compose.util.collectAsStateWithLifecycle
 import com.example.demo_mvvm_jetpack_compose.viewmodel.QuoteResultViewModel
 
 
 @Composable
-fun ListBody(
+fun ListScreen(
     viewModel: QuoteResultViewModel,
     onQuoteClick: (String) -> Unit = {},
 ) {
-    val quoteResultList = viewModel.getData().observeAsState()
-    quoteResultList.value?.let {
-        MessageGridListWithLazy(
-            quoteResult = it,
-            onQuoteClick = onQuoteClick
-        )
-    }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    QuoteResultsContent(
+        loading = uiState.isLoading,
+        quoteResult = uiState.quoteResults,
+        onQuoteClick = onQuoteClick,
+        onRefresh = viewModel::refresh
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MessageGridListWithLazy(quoteResult: List<Quote.Result>, onQuoteClick: (String) -> Unit) {
-    //it skips the forEach
-    LazyVerticalGrid(
-        cells = GridCells.Adaptive(128.dp),
-        content = {
-            items(quoteResult) { it ->
-                CardViewRow(quoteResult = it, onQuoteClick = onQuoteClick)
-            }
-        })
+fun QuoteResultsContent(
+    loading: Boolean,
+    quoteResult: List<Quote.Result>,
+    onQuoteClick: (String) -> Unit,
+    onRefresh: () -> Unit,
+) {
+    LoadingContent(
+        loading = loading,
+        empty = quoteResult.isEmpty() && !loading,
+        emptyContent = { QuoteResultEmptyContent() },
+        onRefresh = onRefresh
+    ) {
+        //it skips the forEach
+        LazyVerticalGrid(
+            cells = GridCells.Adaptive(128.dp),
+            content = {
+                items(quoteResult) { it ->
+                    CardViewRow(quoteResult = it, onQuoteClick = onQuoteClick)
+                }
+            })
+    }
 }
 
 @Composable
@@ -107,5 +121,17 @@ fun SingleQuoteResultContent(quoteResult: Quote.Result) {
             modifier = Modifier.padding(20.dp),
             text = quoteResult.author
         )
+    }
+}
+
+
+@Composable
+private fun QuoteResultEmptyContent(
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("empty")
     }
 }

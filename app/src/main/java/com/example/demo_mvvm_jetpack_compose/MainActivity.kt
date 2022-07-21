@@ -16,7 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.demo_mvvm_jetpack_compose.ui.components.MainTabRow
-import com.example.demo_mvvm_jetpack_compose.ui.list.ListBody
+import com.example.demo_mvvm_jetpack_compose.ui.list.ListScreen
 import com.example.demo_mvvm_jetpack_compose.ui.list.SingleQuoteResultDetail
 import com.example.demo_mvvm_jetpack_compose.ui.theme.Demo_mvvm_jetpack_composeTheme
 import com.example.demo_mvvm_jetpack_compose.viewmodel.QuoteResultViewModel
@@ -65,7 +65,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
     ) {
         composable(route = MainScreen.QuoteResultList.name) {
             val viewModel = hiltViewModel<QuoteResultViewModel>()
-            ListBody(viewModel = viewModel) { quoteID ->
+            ListScreen(viewModel = viewModel) { quoteID ->
                 navigateToSingleQuote(navController = navController, quoteID = quoteID)
             }
         }
