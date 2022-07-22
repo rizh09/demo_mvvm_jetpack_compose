@@ -1,4 +1,4 @@
-package com.example.demo_mvvm_jetpack_compose
+package com.example.demo_mvvm_jetpack_compose.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,11 +15,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.demo_mvvm_jetpack_compose.ui.components.MainTabRow
-import com.example.demo_mvvm_jetpack_compose.ui.list.ListScreen
-import com.example.demo_mvvm_jetpack_compose.ui.list.SingleQuoteResultDetail
-import com.example.demo_mvvm_jetpack_compose.ui.theme.Demo_mvvm_jetpack_composeTheme
-import com.example.demo_mvvm_jetpack_compose.viewmodel.QuoteResultViewModel
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.components.MainTabRow
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.ListScreen
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.PagingScreen
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.SingleQuoteResultDetail
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.theme.Demo_mvvm_jetpack_composeTheme
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -93,10 +94,40 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
                 SingleQuoteResultDetail(quoteID = quoteID, viewModel = viewModel)
             }
         }
+
+        composable(route = MainScreen.QuoteResultPaging.name) {
+            val viewModel = hiltViewModel<QuoteResultViewModel>()
+            PagingScreen(viewModel = viewModel) { quoteID ->
+                navigateToSingleQuoteForPaging(navController = navController, quoteID = quoteID)
+            }
+        }
+
+        val quotResultPaging = MainScreen.QuoteResultPaging.name
+        composable(
+            route = "$quotResultPaging/{quoteID}",
+            arguments = listOf(
+                navArgument("quoteID") {
+                    // Make argument type safe
+                    type = NavType.StringType
+                }
+            )
+        )
+        { entry ->
+            val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
+            val quoteID = entry.arguments?.getString("quoteID")
+            if (quoteID != null) {
+                SingleQuoteResultDetail(quoteID = quoteID, viewModel = viewModel)
+            }
+        }
     }
 }
 
 private fun navigateToSingleQuote(navController: NavHostController, quoteID: String) {
     //create an route with QuoteResultList/quoteID
     navController.navigate("${MainScreen.QuoteResultList.name}/$quoteID")
+}
+
+private fun navigateToSingleQuoteForPaging(navController: NavHostController, quoteID: String) {
+    //create an route with QuoteResultList/quoteID
+    navController.navigate("${MainScreen.QuoteResultPaging.name}/$quoteID")
 }

@@ -1,7 +1,7 @@
 package com.example.demo_mvvm_jetpack_compose.di.module
 
 import android.util.Log
-import com.example.demo_mvvm_jetpack_compose.Constant
+import com.example.demo_mvvm_jetpack_compose.util.Constant
 import com.example.demo_mvvm_jetpack_compose.network.internet.QuoteService
 import dagger.Module
 import dagger.Provides

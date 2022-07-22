@@ -1,8 +1,11 @@
-package com.example.demo_mvvm_jetpack_compose.ui.list
+package com.example.demo_mvvm_jetpack_compose.presentation.ui.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
@@ -19,10 +22,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.demo_mvvm_jetpack_compose.model.Quote
+import com.example.demo_mvvm_jetpack_compose.data.model.Quote
 import com.example.demo_mvvm_jetpack_compose.util.LoadingContent
 import com.example.demo_mvvm_jetpack_compose.util.collectAsStateWithLifecycle
-import com.example.demo_mvvm_jetpack_compose.viewmodel.QuoteResultViewModel
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 
 
 @Composable

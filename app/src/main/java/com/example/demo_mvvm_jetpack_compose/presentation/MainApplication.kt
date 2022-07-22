@@ -1,4 +1,4 @@
-package com.example.demo_mvvm_jetpack_compose
+package com.example.demo_mvvm_jetpack_compose.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

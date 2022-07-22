@@ -1,8 +1,9 @@
-package com.example.demo_mvvm_jetpack_compose.database
+package com.example.demo_mvvm_jetpack_compose.data.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.demo_mvvm_jetpack_compose.model.Quote
+import com.example.demo_mvvm_jetpack_compose.data.model.Quote
 
 
 /**
@@ -14,7 +15,7 @@ import com.example.demo_mvvm_jetpack_compose.model.Quote
 /**
  * DatabaseVideo represents a video entity in the database.
  */
-@Entity
+@Entity(tableName = "quote_results")
 data class DatabaseQuoteResult constructor(
     @PrimaryKey
     val id: String,
@@ -25,6 +26,14 @@ data class DatabaseQuoteResult constructor(
     val dateAdded: String,
     val dateModified: String,
     val length: Int
+)
+
+@Entity(tableName = "remote_keys")
+data class QuoteResultRemoteKey constructor(
+    @PrimaryKey
+    @ColumnInfo(collate = ColumnInfo.NOCASE)
+    val quoteResultRemoteKey: String, // technically mutable but fine for a demo
+    val nextPageKey: String?
 )
 
 /**

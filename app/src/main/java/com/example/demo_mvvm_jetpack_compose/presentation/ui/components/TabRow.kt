@@ -1,4 +1,4 @@
-package com.example.demo_mvvm_jetpack_compose.ui.components
+package com.example.demo_mvvm_jetpack_compose.presentation.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -24,7 +24,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.demo_mvvm_jetpack_compose.MainScreen
+import com.example.demo_mvvm_jetpack_compose.presentation.MainScreen
 import java.util.*
 
 @Composable

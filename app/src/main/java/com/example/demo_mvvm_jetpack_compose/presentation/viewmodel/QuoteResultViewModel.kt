@@ -1,8 +1,11 @@
-package com.example.demo_mvvm_jetpack_compose.viewmodel
+package com.example.demo_mvvm_jetpack_compose.presentation.viewmodel
 
 import androidx.lifecycle.*
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.example.demo_mvvm_jetpack_compose.data.database.asDomainModel
 import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteUseCase
-import com.example.demo_mvvm_jetpack_compose.model.Quote
+import com.example.demo_mvvm_jetpack_compose.data.model.Quote
 import com.example.demo_mvvm_jetpack_compose.util.Async
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +35,7 @@ class QuoteResultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<QuoteResultUiState>(
         QuoteResultUiState()
     )
-    
+
     //uiState as a object between viewModel and activity
     val uiState: StateFlow<QuoteResultUiState> = combine(
         _isLoading, _userMessage, _quoteResultAsync
@@ -79,6 +82,15 @@ class QuoteResultViewModel @Inject constructor(
         viewModelScope.launch {
             getQuoteUseCase.invoke()
             _isLoading.value = false
+        }
+    }
+
+    //paging
+    private val _pagingData = getQuoteUseCase.quoteResultPaging.cachedIn(viewModelScope)
+
+    val pagingData = _pagingData.map { pagingData ->
+        pagingData.map {
+            it.asDomainModel()
         }
     }
 }

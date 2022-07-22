@@ -1,4 +1,4 @@
-package com.example.demo_mvvm_jetpack_compose.ui.theme
+package com.example.demo_mvvm_jetpack_compose.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

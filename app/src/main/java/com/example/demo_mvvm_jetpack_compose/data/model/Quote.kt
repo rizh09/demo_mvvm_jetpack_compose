@@ -1,4 +1,4 @@
-package com.example.demo_mvvm_jetpack_compose.model
+package com.example.demo_mvvm_jetpack_compose.data.model
 
 
 import com.squareup.moshi.Json
