@@ -66,16 +66,16 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
         composable(route = MainScreen.QuoteTag.name) {
             val viewModel = hiltViewModel<QuoteTagViewModel>()
             ListScreen(viewModel = viewModel)
-//            { quoteID ->
-//                navigateToSingleQuote(navController = navController, quoteID = quoteID)
-//            }
+            { tagName ->
+                navigateToSingleQuotePaging(navController = navController, tagName = tagName)
+            }
         }
 
         val quoteResultsName = MainScreen.QuoteTag.name
         composable(
-            route = "$quoteResultsName/{quoteID}",
+            route = "$quoteResultsName/{tagName}",
             arguments = listOf(
-                navArgument("quoteID") {
+                navArgument("tagName") {
                     // Make argument type safe
                     type = NavType.StringType
                 }
@@ -88,9 +88,18 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 //            )
         ) { entry ->
             val viewModel = hiltViewModel<QuoteTagViewModel>(entry)
-            val quoteID = entry.arguments?.getString("quoteID")
-            if (quoteID != null) {
-                SingleQuoteTagDetail(quoteID = quoteID, viewModel = viewModel)
+            val tagName = entry.arguments?.getString("tagName")
+            if (tagName != null) {
+                PagingByTagScreen(
+                    selectedTag = tagName,
+                    viewModel = viewModel,
+                    onQuoteClick = { quoteID ->
+                        navigateToSingleQuoteForPaging(
+                            navController = navController,
+                            quoteID = quoteID
+                        )
+                    }
+                )
             }
         }
 
@@ -126,7 +135,10 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             PagingWithSearchScreen(
                 viewModel = viewModel,
                 onQuoteClick = { quoteID ->
-                    navigateToSingleQuoteForSearchPaging(navController = navController, quoteID = quoteID)
+                    navigateToSingleQuoteForSearchPaging(
+                        navController = navController,
+                        quoteID = quoteID
+                    )
                 },
                 onSearchClicked = { keywords ->
                     viewModel.searchByKeywords(keywords)
@@ -152,9 +164,9 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
     }
 }
 
-private fun navigateToSingleQuote(navController: NavHostController, quoteID: String) {
+private fun navigateToSingleQuotePaging(navController: NavHostController, tagName: String) {
     //create an route with QuoteResultList/quoteID
-    navController.navigate("${MainScreen.QuoteTag.name}/$quoteID")
+    navController.navigate("${MainScreen.QuoteTag.name}/$tagName")
 }
 
 private fun navigateToSingleQuoteForPaging(navController: NavHostController, quoteID: String) {
@@ -162,7 +174,10 @@ private fun navigateToSingleQuoteForPaging(navController: NavHostController, quo
     navController.navigate("${MainScreen.RandomQuote.name}/$quoteID")
 }
 
-private fun navigateToSingleQuoteForSearchPaging(navController: NavHostController, quoteID: String) {
+private fun navigateToSingleQuoteForSearchPaging(
+    navController: NavHostController,
+    quoteID: String
+) {
     //create an route with QuoteResultList/quoteID
     navController.navigate("${MainScreen.SearchQuote.name}/$quoteID")
 }

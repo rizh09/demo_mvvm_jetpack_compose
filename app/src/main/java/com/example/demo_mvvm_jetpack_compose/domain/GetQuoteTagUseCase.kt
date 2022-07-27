@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetQuoteTagUseCase @Inject constructor(
     private val quoteTagRepository: QuoteTagRepository
-){
+) {
     val quoteTags = quoteTagRepository.getQuoteTags().asLiveData()
 
     suspend operator fun invoke() =

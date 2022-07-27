@@ -13,7 +13,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -73,7 +72,7 @@ fun CardViewRow(quoteResult: Tags.TagsItem, onQuoteClick: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(15.dp)
-            .clickable { onQuoteClick(quoteResult.id) },
+            .clickable { onQuoteClick(quoteResult.name) },
         elevation = 10.dp
     ) {
         Column(
@@ -99,31 +98,6 @@ fun CardViewRow(quoteResult: Tags.TagsItem, onQuoteClick: (String) -> Unit) {
                 }
             })
         }
-    }
-}
-
-@Composable
-fun SingleQuoteTagDetail(quoteID: String, viewModel: QuoteTagViewModel) {
-    val quoteResult = viewModel.getData().observeAsState().value?.first { it.id == quoteID }
-    if (quoteResult != null) {
-        SingleQuoteTagContent(quoteResult = quoteResult)
-    }
-}
-
-@Composable
-fun SingleQuoteTagContent(quoteResult: Tags.TagsItem) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Text(
-            text = quoteResult.name
-        )
-        Text(
-            modifier = Modifier.padding(20.dp),
-            text = "count $quoteResult.quoteCount"
-        )
     }
 }
 

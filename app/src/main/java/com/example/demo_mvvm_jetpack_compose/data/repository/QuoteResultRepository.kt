@@ -21,7 +21,7 @@ import javax.inject.Singleton
 class QuoteResultRepository @Inject constructor(
     private val quoteResultDao: QuoteResultDao,
     private val defaultDispatcher: CoroutineDispatcher
-){
+) {
 
     //ref: https://github.com/google-developer-training/android-kotlin-fundamentals-apps/blob/master/RepositoryPattern/app/src/main/java/com/example/android/devbyteviewer/repository/VideosRepository.kt
 

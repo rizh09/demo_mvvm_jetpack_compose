@@ -122,13 +122,13 @@ fun List<DatabaseQuoteTag>.asDomainModel(): List<Tags.TagsItem> {
 
 fun List<Tags.TagsItem>.asDomainModel(): List<DatabaseQuoteTag> {
     return map { tagItem ->
-            DatabaseQuoteTag(
-                id = tagItem.id,
-                name = tagItem.name,
-                quoteCount = tagItem.quoteCount,
-                slug = tagItem.slug,
-                dateModified = tagItem.dateModified,
-                dateAdded = tagItem.dateAdded
-            )
-        }
+        DatabaseQuoteTag(
+            id = tagItem.id,
+            name = tagItem.name,
+            quoteCount = tagItem.quoteCount,
+            slug = tagItem.slug,
+            dateModified = tagItem.dateModified,
+            dateAdded = tagItem.dateAdded
+        )
+    }
 }

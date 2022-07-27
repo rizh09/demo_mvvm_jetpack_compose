@@ -52,7 +52,10 @@ object DatabaseModule {
     }
 }
 
-@Database(entities = [DatabaseQuoteResult::class, QuoteResultRemoteKey::class, DatabaseQuoteTag::class], version = 1)
+@Database(
+    entities = [DatabaseQuoteResult::class, QuoteResultRemoteKey::class, DatabaseQuoteTag::class],
+    version = 1
+)
 abstract class QuoteResultDatabase : RoomDatabase() {
     abstract fun quoteResultDao(): QuoteResultDao
     abstract fun quoteResultRemoteKeyDao(): QuoteResultRemoteKeyDao

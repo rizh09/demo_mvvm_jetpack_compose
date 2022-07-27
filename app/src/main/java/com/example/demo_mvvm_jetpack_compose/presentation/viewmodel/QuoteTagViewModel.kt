@@ -1,7 +1,13 @@
 package com.example.demo_mvvm_jetpack_compose.presentation.viewmodel
 
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.example.demo_mvvm_jetpack_compose.data.database.DatabaseQuoteResult
+import com.example.demo_mvvm_jetpack_compose.data.database.asDomainModel
 import com.example.demo_mvvm_jetpack_compose.data.model.Tags
+import com.example.demo_mvvm_jetpack_compose.domain.GetPagingQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteTagUseCase
 import com.example.demo_mvvm_jetpack_compose.util.Async
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +19,13 @@ import javax.inject.Inject
 @HiltViewModel
 class QuoteTagViewModel @Inject constructor(
     private val getQuoteTagUseCase: GetQuoteTagUseCase,
+    private val getPagingQuoteUseCase: GetPagingQuoteUseCase
 ) : ViewModel() {
 
     init {
-        loadData()
+        loadTagData()
     }
-    
+
     //https://stackoverflow.com/questions/63146318/how-to-create-and-use-a-room-database-in-kotlin-dagger-hilt
     private val _isLoading = MutableStateFlow(false)
     private val _userMessage = MutableStateFlow("")
@@ -54,7 +61,7 @@ class QuoteTagViewModel @Inject constructor(
 
     private val _data: MutableLiveData<List<Tags.TagsItem>> by lazy {
         MutableLiveData<List<Tags.TagsItem>>().also {
-            loadData()
+            loadTagData()
         }
     }
 
@@ -63,7 +70,7 @@ class QuoteTagViewModel @Inject constructor(
         return getQuoteTagUseCase.quoteTags
     }
 
-    private fun loadData() {
+    private fun loadTagData() {
         // Do an asynchronous operation to fetch users
         viewModelScope.launch(Dispatchers.IO) {
             getQuoteTagUseCase.invoke()
@@ -77,7 +84,26 @@ class QuoteTagViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+
+
+    //show paging data by selected tag
+    private val _pagingData = MutableStateFlow<PagingData<DatabaseQuoteResult>>(PagingData.empty())
+
+    val pagingData = _pagingData.map { pagingData ->
+        pagingData.map {
+            it.asDomainModel()
+        }
+    }
+
+    suspend fun getSingleListOfQuoteByTag(tag: String) {
+        viewModelScope.launch {
+            getPagingQuoteUseCase.invoke(tag).cachedIn(viewModelScope).collect {
+                _pagingData.value = it
+            }
+        }
+    }
 }
+
 data class QuoteTagUiState(
     val isLoading: Boolean = false,
     val quoteTags: List<Tags.TagsItem> = emptyList(),

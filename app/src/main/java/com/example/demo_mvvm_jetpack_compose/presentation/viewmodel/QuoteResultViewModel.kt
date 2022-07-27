@@ -1,7 +1,10 @@
 package com.example.demo_mvvm_jetpack_compose.presentation.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -97,7 +100,6 @@ class QuoteResultViewModel @Inject constructor(
     fun searchByKeywords(keywords: String) {
         viewModelScope.launch {
             getPagingQuoteUseCase.invoke(keywords).cachedIn(viewModelScope).collect {
-
                 _searchedQuotes.value = it
             }
         }

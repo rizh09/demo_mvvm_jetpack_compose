@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -20,6 +21,29 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteTagViewModel
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PagingByTagScreen(
+    selectedTag: String,
+    viewModel: QuoteTagViewModel,
+    onQuoteClick: (String) -> Unit = {}
+) {
+
+    //ref : https://developer.android.com/jetpack/compose/side-effects#launchedeffect
+    // `LaunchedEffect` will cancel and re-launch if
+    // `selectedTag` changes
+    LaunchedEffect(selectedTag) {
+        viewModel.getSingleListOfQuoteByTag(selectedTag)
+    }
+    val quotes = viewModel.pagingData.collectAsLazyPagingItems()
+
+    PagingContent(
+        data = quotes,
+        onQuoteClick = onQuoteClick
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -27,6 +51,7 @@ fun PagingScreen(
     viewModel: QuoteResultViewModel,
     onQuoteClick: (String) -> Unit = {}
 ) {
+
     val quotes = viewModel.pagingData.collectAsLazyPagingItems()
 
     PagingContent(
