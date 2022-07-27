@@ -1,8 +1,8 @@
 package com.example.demo_mvvm_jetpack_compose.data.repository
 
 import com.example.demo_mvvm_jetpack_compose.data.database.asDomainModel
-import com.example.demo_mvvm_jetpack_compose.di.module.QuoteResultDao
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
+import com.example.demo_mvvm_jetpack_compose.di.module.QuoteResultDao
 import com.example.demo_mvvm_jetpack_compose.network.internet.QuoteService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

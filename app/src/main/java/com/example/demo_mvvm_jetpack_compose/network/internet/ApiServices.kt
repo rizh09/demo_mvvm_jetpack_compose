@@ -17,5 +17,10 @@ interface QuoteService {
     suspend fun getQuotes(): Response<Quote>
 
     @GET("quotes")
-    suspend fun getQuotesByPage(@Query("page") loadKey: String? = null): Response<Quote>
+    suspend fun getQuotesByPageAndKeywords(
+        @Query("page") loadKey: String? = null,
+        @Query("tags") keywords: String? = null
+    ): Response<Quote>
+
+
 }

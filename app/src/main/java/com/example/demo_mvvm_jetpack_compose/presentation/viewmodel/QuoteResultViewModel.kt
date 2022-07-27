@@ -1,11 +1,15 @@
 package com.example.demo_mvvm_jetpack_compose.presentation.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.example.demo_mvvm_jetpack_compose.data.database.DatabaseQuoteResult
 import com.example.demo_mvvm_jetpack_compose.data.database.asDomainModel
-import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
+import com.example.demo_mvvm_jetpack_compose.domain.GetPagingQuoteUseCase
+import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.util.Async
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +25,8 @@ import javax.inject.Inject
 //2. RegistrationViewModel has UserManager as dependency since the constructor takes an instance of UserManager as an argument.
 @HiltViewModel
 class QuoteResultViewModel @Inject constructor(
-    private val getQuoteUseCase: GetQuoteUseCase
+    private val getQuoteUseCase: GetQuoteUseCase,
+    private val getPagingQuoteUseCase: GetPagingQuoteUseCase
 ) :
     ViewModel() {
     //https://stackoverflow.com/questions/63146318/how-to-create-and-use-a-room-database-in-kotlin-dagger-hilt
@@ -86,11 +91,37 @@ class QuoteResultViewModel @Inject constructor(
     }
 
     //paging
-    private val _pagingData = getQuoteUseCase.quoteResultPaging.cachedIn(viewModelScope)
+    private val _pagingData = getPagingQuoteUseCase.quoteResultPaging.cachedIn(viewModelScope)
 
     val pagingData = _pagingData.map { pagingData ->
         pagingData.map {
             it.asDomainModel()
+        }
+    }
+
+    //search query
+    private val _searchQuery = mutableStateOf("")
+    val searchQuery = _searchQuery
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    //search results
+    private val _searchedQuotes =
+        MutableStateFlow<PagingData<DatabaseQuoteResult>>(PagingData.empty())
+    val searchedQuotes = _searchedQuotes.map { pagingData ->
+        pagingData.map {
+            it.asDomainModel()
+        }
+    }
+
+    fun searchByKeywords(keywords: String) {
+        viewModelScope.launch {
+            getPagingQuoteUseCase.invoke(keywords).cachedIn(viewModelScope).collect {
+
+                _searchedQuotes.value = it
+            }
         }
     }
 }

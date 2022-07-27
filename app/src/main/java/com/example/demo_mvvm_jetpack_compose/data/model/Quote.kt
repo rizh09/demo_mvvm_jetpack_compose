@@ -12,7 +12,7 @@ data class Quote(
     @Json(name = "count")
     val count: Int,
     @Json(name = "lastItemIndex")
-    val lastItemIndex: Int,
+    val lastItemIndex: Int? = null, //value can be null
     @Json(name = "page")
     val page: Int,
     @Json(name = "results")

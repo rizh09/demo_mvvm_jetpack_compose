@@ -1,8 +1,9 @@
 package com.example.demo_mvvm_jetpack_compose.presentation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class MainScreen(
@@ -12,7 +13,10 @@ enum class MainScreen(
         icon = Icons.Filled.Menu,
     ),
     QuoteResultPaging(
-        icon = Icons.Filled.AccountBox
+        icon = Icons.Filled.Home
+    ),
+    QuotResultPagingWithSearch(
+        icon = Icons.Filled.Search
     );
 
     companion object {
@@ -20,6 +24,7 @@ enum class MainScreen(
             when (route?.substringBefore("/")) {
                 QuoteResultList.name -> QuoteResultList
                 QuoteResultPaging.name -> QuoteResultPaging
+                QuotResultPagingWithSearch.name -> QuotResultPagingWithSearch
                 null -> QuoteResultList
                 else -> throw IllegalArgumentException("Route $route is not recognized")
             }

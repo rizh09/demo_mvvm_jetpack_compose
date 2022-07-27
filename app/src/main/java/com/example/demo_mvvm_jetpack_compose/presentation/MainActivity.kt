@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.components.MainTabRow
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.ListScreen
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.PagingScreen
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.PagingWithSearchScreen
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.SingleQuoteResultDetail
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.theme.Demo_mvvm_jetpack_composeTheme
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
@@ -86,8 +87,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 //                    uriPattern = ""
 //                }
 //            )
-        )
-        { entry ->
+        ) { entry ->
             val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
             val quoteID = entry.arguments?.getString("quoteID")
             if (quoteID != null) {
@@ -97,9 +97,12 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 
         composable(route = MainScreen.QuoteResultPaging.name) {
             val viewModel = hiltViewModel<QuoteResultViewModel>()
-            PagingScreen(viewModel = viewModel) { quoteID ->
-                navigateToSingleQuoteForPaging(navController = navController, quoteID = quoteID)
-            }
+            PagingScreen(
+                viewModel = viewModel,
+                onQuoteClick = { quoteID ->
+                    navigateToSingleQuoteForPaging(navController = navController, quoteID = quoteID)
+                }
+            )
         }
 
         val quotResultPaging = MainScreen.QuoteResultPaging.name
@@ -111,8 +114,36 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
                     type = NavType.StringType
                 }
             )
-        )
-        { entry ->
+        ) { entry ->
+            val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
+            val quoteID = entry.arguments?.getString("quoteID")
+            if (quoteID != null) {
+                SingleQuoteResultDetail(quoteID = quoteID, viewModel = viewModel)
+            }
+        }
+
+        composable(route = MainScreen.QuotResultPagingWithSearch.name) {
+            val viewModel = hiltViewModel<QuoteResultViewModel>()
+            PagingWithSearchScreen(
+                viewModel = viewModel,
+                onQuoteClick = { quoteID ->
+                    navigateToSingleQuoteForPaging(navController = navController, quoteID = quoteID)
+                },
+                onSearchClicked = { keywords ->
+                    viewModel.searchByKeywords(keywords)
+                }
+            )
+        }
+        val quotResultPagingWithSearch = MainScreen.QuotResultPagingWithSearch.name
+        composable(
+            route = "$quotResultPagingWithSearch/{quoteID}",
+            arguments = listOf(
+                navArgument("quoteID") {
+                    // Make argument type safe
+                    type = NavType.StringType
+                }
+            )
+        ) { entry ->
             val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
             val quoteID = entry.arguments?.getString("quoteID")
             if (quoteID != null) {

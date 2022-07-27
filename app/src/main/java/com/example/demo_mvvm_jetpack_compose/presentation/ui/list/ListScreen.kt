@@ -23,9 +23,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 import com.example.demo_mvvm_jetpack_compose.util.LoadingContent
 import com.example.demo_mvvm_jetpack_compose.util.collectAsStateWithLifecycle
-import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 
 
 @Composable

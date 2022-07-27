@@ -15,7 +15,11 @@ fun PagingScreen(
     onQuoteClick: (String) -> Unit = {}
 ) {
     val quotes = viewModel.pagingData.collectAsLazyPagingItems()
-    PagingContent(data = quotes, onQuoteClick = onQuoteClick)
+
+    PagingContent(
+        data = quotes,
+        onQuoteClick = onQuoteClick
+    )
 }
 
 @Composable

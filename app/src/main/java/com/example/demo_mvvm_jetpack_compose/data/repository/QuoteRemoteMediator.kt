@@ -15,7 +15,7 @@ import retrofit2.HttpException
 @OptIn(ExperimentalPagingApi::class)
 class QuoteRemoteMediator(
     private val db: QuoteResultDatabase,
-    private val quoteName: String,
+    private val keywords: String,
     private val quoteService: QuoteService,
 ) : RemoteMediator<Int, DatabaseQuoteResult>() {
 
@@ -36,7 +36,7 @@ class QuoteRemoteMediator(
                     // SubredditRemoteKey is a wrapper object we use to keep track of page keys we
                     // receive from the Reddit API to fetch the next or previous page.
                     val remoteKey = db.withTransaction {
-                        quoteResultRemoteKeyDao.getRemoteKeyByQuote(quoteName)
+                        quoteResultRemoteKeyDao.getRemoteKeyByQuote(keywords)
                     }
 
                     // We must explicitly check if the page key is null when appending, since the
@@ -53,7 +53,10 @@ class QuoteRemoteMediator(
             println("loadType $loadType  /  loadKey $loadKey  ")
 
             //loadkey's init state is null, we assign 1
-            val data = quoteService.getQuotesByPage(loadKey ?: "1").body()!!
+            val data = quoteService.getQuotesByPageAndKeywords(
+                loadKey = loadKey ?: "1",
+                keywords = keywords
+            ).body()!!
 
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -63,7 +66,7 @@ class QuoteRemoteMediator(
 
                 quoteResultRemoteKeyDao.insert(
                     QuoteResultRemoteKey(
-                        quoteName,
+                        keywords,
                         (data.page + 1).toString()
                     )
                 )
