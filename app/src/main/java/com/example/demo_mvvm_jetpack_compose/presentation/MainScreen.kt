@@ -1,16 +1,14 @@
 package com.example.demo_mvvm_jetpack_compose.presentation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class MainScreen(
     val icon: ImageVector,
 ) {
-    QuoteResultList(
-        icon = Icons.Filled.Menu,
+    QuoteTag(
+        icon = Icons.Filled.Info,
     ),
     // random quote with remoteMediator as paging
     RandomQuote(
@@ -24,10 +22,10 @@ enum class MainScreen(
     companion object {
         fun fromRoute(route: String?): MainScreen =
             when (route?.substringBefore("/")) {
-                QuoteResultList.name -> QuoteResultList
+                QuoteTag.name -> QuoteTag
                 RandomQuote.name -> RandomQuote
                 SearchQuote.name -> SearchQuote
-                null -> QuoteResultList
+                null -> QuoteTag
                 else -> throw IllegalArgumentException("Route $route is not recognized")
             }
     }

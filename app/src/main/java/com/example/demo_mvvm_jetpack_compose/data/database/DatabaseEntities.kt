@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
+import com.example.demo_mvvm_jetpack_compose.data.model.Tags
 
 
 /**
@@ -36,6 +37,18 @@ data class QuoteResultRemoteKey constructor(
     val nextPageKey: String?
 )
 
+@Entity(tableName = "quote_tags")
+data class DatabaseQuoteTag constructor(
+    @PrimaryKey
+    val id: String,
+    val name: String,
+    val slug: String,
+    val quoteCount: String,
+    val dateAdded: String,
+    val dateModified: String
+)
+
+
 /**
  * Map DatabaseVideos to domain entities
  */
@@ -58,6 +71,8 @@ fun Quote.asDomainModel(): List<DatabaseQuoteResult> {
 }
 
 //from database model "DatabaseQuoteResult" to response model "Quote.Result"
+
+@JvmName("asDomainModelDatabaseQuoteResult")
 fun List<DatabaseQuoteResult>.asDomainModel(): List<Quote.Result> {
     return map {
         Quote.Result(
@@ -89,4 +104,31 @@ fun DatabaseQuoteResult.asDomainModel(): Quote.Result {
             length = it.length
         )
     }
+}
+
+@JvmName("asDomainModelDatabaseQuoteTag")
+fun List<DatabaseQuoteTag>.asDomainModel(): List<Tags.TagsItem> {
+    return map {
+        Tags.TagsItem(
+            id = it.id,
+            name = it.name,
+            quoteCount = it.quoteCount,
+            slug = it.slug,
+            dateModified = it.dateModified,
+            dateAdded = it.dateAdded
+        )
+    }
+}
+
+fun List<Tags.TagsItem>.asDomainModel(): List<DatabaseQuoteTag> {
+    return map { tagItem ->
+            DatabaseQuoteTag(
+                id = tagItem.id,
+                name = tagItem.name,
+                quoteCount = tagItem.quoteCount,
+                slug = tagItem.slug,
+                dateModified = tagItem.dateModified,
+                dateAdded = tagItem.dateAdded
+            )
+        }
 }

@@ -22,21 +22,21 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.demo_mvvm_jetpack_compose.data.model.Quote
-import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
+import com.example.demo_mvvm_jetpack_compose.data.model.Tags
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteTagViewModel
 import com.example.demo_mvvm_jetpack_compose.util.LoadingContent
 import com.example.demo_mvvm_jetpack_compose.util.collectAsStateWithLifecycle
 
 
 @Composable
 fun ListScreen(
-    viewModel: QuoteResultViewModel,
+    viewModel: QuoteTagViewModel,
     onQuoteClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    QuoteResultsContent(
+    QuoteTagsContent(
         loading = uiState.isLoading,
-        quoteResult = uiState.quoteResults,
+        quoteResult = uiState.quoteTags,
         onQuoteClick = onQuoteClick,
         onRefresh = viewModel::refresh
     )
@@ -44,9 +44,9 @@ fun ListScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun QuoteResultsContent(
+fun QuoteTagsContent(
     loading: Boolean,
-    quoteResult: List<Quote.Result>,
+    quoteResult: List<Tags.TagsItem>,
     onQuoteClick: (String) -> Unit,
     onRefresh: () -> Unit,
 ) {
@@ -68,7 +68,7 @@ fun QuoteResultsContent(
 }
 
 @Composable
-fun CardViewRow(quoteResult: Quote.Result, onQuoteClick: (String) -> Unit) {
+fun CardViewRow(quoteResult: Tags.TagsItem, onQuoteClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,7 +86,7 @@ fun CardViewRow(quoteResult: Quote.Result, onQuoteClick: (String) -> Unit) {
                 withStyle(
                     style = SpanStyle(fontStyle = FontStyle.Italic)
                 ) {
-                    append(quoteResult.content)
+                    append(quoteResult.name)
                 }
             })
             Text(buildAnnotatedString
@@ -95,7 +95,7 @@ fun CardViewRow(quoteResult: Quote.Result, onQuoteClick: (String) -> Unit) {
                     style = SpanStyle(fontSize = 12.sp)
                 )
                 {
-                    append(quoteResult.author)
+                    append(quoteResult.quoteCount)
                 }
             })
         }
@@ -103,30 +103,29 @@ fun CardViewRow(quoteResult: Quote.Result, onQuoteClick: (String) -> Unit) {
 }
 
 @Composable
-fun SingleQuoteResultDetail(quoteID: String, viewModel: QuoteResultViewModel) {
+fun SingleQuoteTagDetail(quoteID: String, viewModel: QuoteTagViewModel) {
     val quoteResult = viewModel.getData().observeAsState().value?.first { it.id == quoteID }
     if (quoteResult != null) {
-        SingleQuoteResultContent(quoteResult = quoteResult)
+        SingleQuoteTagContent(quoteResult = quoteResult)
     }
 }
 
 @Composable
-fun SingleQuoteResultContent(quoteResult: Quote.Result) {
+fun SingleQuoteTagContent(quoteResult: Tags.TagsItem) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
     ) {
         Text(
-            text = quoteResult.content
+            text = quoteResult.name
         )
         Text(
             modifier = Modifier.padding(20.dp),
-            text = quoteResult.author
+            text = "count $quoteResult.quoteCount"
         )
     }
 }
-
 
 @Composable
 private fun QuoteResultEmptyContent(

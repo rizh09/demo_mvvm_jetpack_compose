@@ -3,13 +3,10 @@ package com.example.demo_mvvm_jetpack_compose.data.repository
 import com.example.demo_mvvm_jetpack_compose.data.database.asDomainModel
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
 import com.example.demo_mvvm_jetpack_compose.di.module.QuoteResultDao
-import com.example.demo_mvvm_jetpack_compose.network.internet.QuoteService
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,9 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class QuoteResultRepository @Inject constructor(
     private val quoteResultDao: QuoteResultDao,
-    private val quoteService: QuoteService,
     private val defaultDispatcher: CoroutineDispatcher
-) : RepositoryInterface {
+){
 
     //ref: https://github.com/google-developer-training/android-kotlin-fundamentals-apps/blob/master/RepositoryPattern/app/src/main/java/com/example/android/devbyteviewer/repository/VideosRepository.kt
 
@@ -33,18 +29,4 @@ class QuoteResultRepository @Inject constructor(
     fun getQuoteResults(): Flow<List<Quote.Result>> =
         quoteResultDao.getQuoteResult().map { it.asDomainModel() }.flowOn(defaultDispatcher)
 
-    override suspend fun refreshLocalDataByAPICall() {
-        //purpose of this function : refresh offline cache
-
-        //perform async avoid blocking the main thread
-        withContext(Dispatchers.IO) {
-            //api call
-            val quoteBody = quoteService.getQuotes().body()
-            quoteBody.let {
-                if (it != null) {
-                    quoteResultDao.insertAll(it.asDomainModel())
-                }
-            }
-        }
-    }
 }

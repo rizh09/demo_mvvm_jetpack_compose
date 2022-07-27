@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.demo_mvvm_jetpack_compose.data.database.DatabaseQuoteResult
+import com.example.demo_mvvm_jetpack_compose.data.database.DatabaseQuoteTag
 import com.example.demo_mvvm_jetpack_compose.data.database.QuoteResultRemoteKey
 import dagger.Module
 import dagger.Provides
@@ -43,16 +44,24 @@ object DatabaseModule {
     fun providesQuoteResultRemoteKeyDao(db: QuoteResultDatabase): QuoteResultRemoteKeyDao {
         return db.quoteResultRemoteKeyDao()
     }
+
+    @Singleton
+    @Provides
+    fun providesQuoteTagDao(db: QuoteResultDatabase): QuoteTagDao {
+        return db.quoteTagDao()
+    }
 }
 
-@Database(entities = [DatabaseQuoteResult::class, QuoteResultRemoteKey::class], version = 1)
+@Database(entities = [DatabaseQuoteResult::class, QuoteResultRemoteKey::class, DatabaseQuoteTag::class], version = 1)
 abstract class QuoteResultDatabase : RoomDatabase() {
     abstract fun quoteResultDao(): QuoteResultDao
     abstract fun quoteResultRemoteKeyDao(): QuoteResultRemoteKeyDao
+    abstract fun quoteTagDao(): QuoteTagDao
 }
 
 @Dao
 interface QuoteResultDao {
+
     @Query("select * from quote_results")
     //we define the flow type in DAO to get live updates e.g quotesResult added, removed or updated.
     //ref : https://medium.com/androiddevelopers/room-flow-273acffe5b57
@@ -87,4 +96,15 @@ interface QuoteResultRemoteKeyDao {
 
     @Query("DELETE FROM remote_keys WHERE quoteResultRemoteKey = :quoteResultRemoteKey")
     suspend fun deleteRemoteKeyByQuote(quoteResultRemoteKey: String)
+}
+
+@Dao
+interface QuoteTagDao {
+    //we define the flow type in DAO to get live updates e.g quotesResult added, removed or updated.
+    //ref : https://medium.com/androiddevelopers/room-flow-273acffe5b57
+    @Query("select * from quote_tags")
+    fun getQuoteTags(): Flow<List<DatabaseQuoteTag>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(quoteTag: List<DatabaseQuoteTag>)
 }

@@ -1,6 +1,7 @@
 package com.example.demo_mvvm_jetpack_compose.network.internet
 
 import com.example.demo_mvvm_jetpack_compose.data.model.Quote
+import com.example.demo_mvvm_jetpack_compose.data.model.Tags
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,9 +14,8 @@ interface QuoteService {
 
 
     //hard code page = 1, atm
-    @GET("quotes?page=1")
-    suspend fun getQuotes(): Response<Quote>
-
+    @GET("tags")
+    suspend fun getTags(): Response<List<Tags.TagsItem>>
 
     @GET("quotes")
     suspend fun getRandomQuotesByPage(

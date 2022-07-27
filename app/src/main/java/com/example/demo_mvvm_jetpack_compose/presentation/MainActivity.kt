@@ -16,12 +16,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.components.MainTabRow
-import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.ListScreen
-import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.PagingScreen
-import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.PagingWithSearchScreen
-import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.SingleQuoteResultDetail
+import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.*
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.theme.Demo_mvvm_jetpack_composeTheme
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
+import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteTagViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -62,17 +60,18 @@ fun MainApp() {
 @Composable
 fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
-        navController = navController, startDestination = MainScreen.QuoteResultList.name,
+        navController = navController, startDestination = MainScreen.QuoteTag.name,
         modifier = modifier
     ) {
-        composable(route = MainScreen.QuoteResultList.name) {
-            val viewModel = hiltViewModel<QuoteResultViewModel>()
-            ListScreen(viewModel = viewModel) { quoteID ->
-                navigateToSingleQuote(navController = navController, quoteID = quoteID)
-            }
+        composable(route = MainScreen.QuoteTag.name) {
+            val viewModel = hiltViewModel<QuoteTagViewModel>()
+            ListScreen(viewModel = viewModel)
+//            { quoteID ->
+//                navigateToSingleQuote(navController = navController, quoteID = quoteID)
+//            }
         }
 
-        val quoteResultsName = MainScreen.QuoteResultList.name
+        val quoteResultsName = MainScreen.QuoteTag.name
         composable(
             route = "$quoteResultsName/{quoteID}",
             arguments = listOf(
@@ -88,10 +87,10 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 //                }
 //            )
         ) { entry ->
-            val viewModel = hiltViewModel<QuoteResultViewModel>(entry)
+            val viewModel = hiltViewModel<QuoteTagViewModel>(entry)
             val quoteID = entry.arguments?.getString("quoteID")
             if (quoteID != null) {
-                SingleQuoteResultDetail(quoteID = quoteID, viewModel = viewModel)
+                SingleQuoteTagDetail(quoteID = quoteID, viewModel = viewModel)
             }
         }
 
@@ -155,7 +154,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 
 private fun navigateToSingleQuote(navController: NavHostController, quoteID: String) {
     //create an route with QuoteResultList/quoteID
-    navController.navigate("${MainScreen.QuoteResultList.name}/$quoteID")
+    navController.navigate("${MainScreen.QuoteTag.name}/$quoteID")
 }
 
 private fun navigateToSingleQuoteForPaging(navController: NavHostController, quoteID: String) {

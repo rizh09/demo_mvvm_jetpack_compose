@@ -12,7 +12,6 @@ import com.example.demo_mvvm_jetpack_compose.domain.GetPagingQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.domain.GetQuoteUseCase
 import com.example.demo_mvvm_jetpack_compose.util.Async
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
@@ -63,31 +62,10 @@ class QuoteResultViewModel @Inject constructor(
         initialValue = QuoteResultUiState(isLoading = true)
     )
 
-    private val _data: MutableLiveData<List<Quote.Result>> by lazy {
-        MutableLiveData<List<Quote.Result>>().also {
-            loadData()
-        }
-    }
 
     // it refers to repository's data, it ensure the UI load data from UI
     fun getData(): LiveData<List<Quote.Result>> {
         return getQuoteUseCase.quoteResultList
-    }
-
-    private fun loadData() {
-        // Do an asynchronous operation to fetch users
-        viewModelScope.launch(Dispatchers.IO) {
-            getQuoteUseCase.invoke()
-            //after api call
-        }
-    }
-
-    fun refresh() {
-        _isLoading.value = true
-        viewModelScope.launch {
-            getQuoteUseCase.invoke()
-            _isLoading.value = false
-        }
     }
 
     //paging
