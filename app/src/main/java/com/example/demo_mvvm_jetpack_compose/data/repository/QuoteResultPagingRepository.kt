@@ -18,7 +18,7 @@ class QuoteResultPagingRepository
         config = PagingConfig(pageSize = ITEMS_PER_PAGE),
         remoteMediator = QuoteRemoteMediator(
             db = db,
-            keywords = "defaultQuoteRemoteKey",
+            keywords = "random",
             quoteService = quoteService
         )
     ) {
@@ -34,6 +34,6 @@ class QuoteResultPagingRepository
             quoteService = quoteService
         )
     ) {
-        db.quoteResultDao().getQuotResultPaging()
+        db.quoteResultDao().getQuotResultPagingByKeywords(keywords = keywords ?: "")
     }.flow
 }

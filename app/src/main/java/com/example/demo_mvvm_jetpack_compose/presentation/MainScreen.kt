@@ -12,10 +12,12 @@ enum class MainScreen(
     QuoteResultList(
         icon = Icons.Filled.Menu,
     ),
-    QuoteResultPaging(
+    // random quote with remoteMediator as paging
+    RandomQuote(
         icon = Icons.Filled.Home
     ),
-    QuotResultPagingWithSearch(
+    // demo search quote by keywords with remoteMediator as paging
+    SearchQuote(
         icon = Icons.Filled.Search
     );
 
@@ -23,8 +25,8 @@ enum class MainScreen(
         fun fromRoute(route: String?): MainScreen =
             when (route?.substringBefore("/")) {
                 QuoteResultList.name -> QuoteResultList
-                QuoteResultPaging.name -> QuoteResultPaging
-                QuotResultPagingWithSearch.name -> QuotResultPagingWithSearch
+                RandomQuote.name -> RandomQuote
+                SearchQuote.name -> SearchQuote
                 null -> QuoteResultList
                 else -> throw IllegalArgumentException("Route $route is not recognized")
             }

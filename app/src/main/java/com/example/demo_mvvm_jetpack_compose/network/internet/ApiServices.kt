@@ -16,6 +16,12 @@ interface QuoteService {
     @GET("quotes?page=1")
     suspend fun getQuotes(): Response<Quote>
 
+
+    @GET("quotes")
+    suspend fun getRandomQuotesByPage(
+        @Query("page") loadKey: String? = null
+    ): Response<Quote>
+
     @GET("quotes")
     suspend fun getQuotesByPageAndKeywords(
         @Query("page") loadKey: String? = null,

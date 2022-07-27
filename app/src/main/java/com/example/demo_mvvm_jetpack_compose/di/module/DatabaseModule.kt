@@ -70,6 +70,11 @@ interface QuoteResultDao {
     @Query("DELETE FROM quote_results")
     suspend fun deleteAllQuote()
 
+    @Query("select * from quote_results where tags LIKE :keywords")
+    fun getQuotResultPagingByKeywords(keywords: String): PagingSource<Int, DatabaseQuoteResult>
+
+    @Query("DELETE FROM quote_results where tags LIKE :keywords")
+    suspend fun deleteQuoteByKeywords(keywords: String)
 }
 
 @Dao
@@ -80,6 +85,6 @@ interface QuoteResultRemoteKeyDao {
     @Query("SELECT * FROM remote_keys WHERE quoteResultRemoteKey = :quoteResultRemoteKey")
     suspend fun getRemoteKeyByQuote(quoteResultRemoteKey: String): QuoteResultRemoteKey
 
-    @Query("DELETE FROM remote_keys WHERE quoteResultRemoteKey")
-    suspend fun deleteAllRemoteKey()
+    @Query("DELETE FROM remote_keys WHERE quoteResultRemoteKey = :quoteResultRemoteKey")
+    suspend fun deleteRemoteKeyByQuote(quoteResultRemoteKey: String)
 }

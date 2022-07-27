@@ -53,15 +53,21 @@ class QuoteRemoteMediator(
             println("loadType $loadType  /  loadKey $loadKey  ")
 
             //loadkey's init state is null, we assign 1
-            val data = quoteService.getQuotesByPageAndKeywords(
-                loadKey = loadKey ?: "1",
-                keywords = keywords
-            ).body()!!
+            // if keywords is random, we invoke getRandomQuotesByPage for UI RandomQuote
+            // else we invoke getQuotesByPageAndKeywords for UI SearchQuote
+            val data = if (keywords == "random") {
+                quoteService.getRandomQuotesByPage(loadKey ?: "1").body()!!
+            } else {
+                quoteService.getQuotesByPageAndKeywords(
+                    loadKey = loadKey ?: "1",
+                    keywords = keywords
+                ).body()!!
+            }
 
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    quoteResultDao.deleteAllQuote()
-                    quoteResultRemoteKeyDao.deleteAllRemoteKey()
+                    quoteResultDao.deleteQuoteByKeywords(keywords)
+                    quoteResultRemoteKeyDao.deleteRemoteKeyByQuote(keywords)
                 }
 
                 quoteResultRemoteKeyDao.insert(

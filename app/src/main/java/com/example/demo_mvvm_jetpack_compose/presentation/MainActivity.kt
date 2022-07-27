@@ -95,7 +95,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             }
         }
 
-        composable(route = MainScreen.QuoteResultPaging.name) {
+        composable(route = MainScreen.RandomQuote.name) {
             val viewModel = hiltViewModel<QuoteResultViewModel>()
             PagingScreen(
                 viewModel = viewModel,
@@ -105,7 +105,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             )
         }
 
-        val quotResultPaging = MainScreen.QuoteResultPaging.name
+        val quotResultPaging = MainScreen.RandomQuote.name
         composable(
             route = "$quotResultPaging/{quoteID}",
             arguments = listOf(
@@ -122,19 +122,19 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             }
         }
 
-        composable(route = MainScreen.QuotResultPagingWithSearch.name) {
+        composable(route = MainScreen.SearchQuote.name) {
             val viewModel = hiltViewModel<QuoteResultViewModel>()
             PagingWithSearchScreen(
                 viewModel = viewModel,
                 onQuoteClick = { quoteID ->
-                    navigateToSingleQuoteForPaging(navController = navController, quoteID = quoteID)
+                    navigateToSingleQuoteForSearchPaging(navController = navController, quoteID = quoteID)
                 },
                 onSearchClicked = { keywords ->
                     viewModel.searchByKeywords(keywords)
                 }
             )
         }
-        val quotResultPagingWithSearch = MainScreen.QuotResultPagingWithSearch.name
+        val quotResultPagingWithSearch = MainScreen.SearchQuote.name
         composable(
             route = "$quotResultPagingWithSearch/{quoteID}",
             arguments = listOf(
@@ -160,5 +160,10 @@ private fun navigateToSingleQuote(navController: NavHostController, quoteID: Str
 
 private fun navigateToSingleQuoteForPaging(navController: NavHostController, quoteID: String) {
     //create an route with QuoteResultList/quoteID
-    navController.navigate("${MainScreen.QuoteResultPaging.name}/$quoteID")
+    navController.navigate("${MainScreen.RandomQuote.name}/$quoteID")
+}
+
+private fun navigateToSingleQuoteForSearchPaging(navController: NavHostController, quoteID: String) {
+    //create an route with QuoteResultList/quoteID
+    navController.navigate("${MainScreen.SearchQuote.name}/$quoteID")
 }
