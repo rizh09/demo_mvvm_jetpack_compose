@@ -25,7 +25,7 @@ fun PagingWithSearchScreen(
         updateSearchQuery = { viewModel.updateSearchQuery(it) },
         searchQuery = searchQuery,
         onSearchClicked = onSearchClicked,
-        data = searchQuotes,
+        quotes = searchQuotes,
         onQuoteClick = onQuoteClick
     )
 }
@@ -33,7 +33,7 @@ fun PagingWithSearchScreen(
 @Composable
 fun PagingWithSearchContent(
     searchQuery: String,
-    data: LazyPagingItems<Quote.Result>,
+    quotes: LazyPagingItems<Quote.Result>,
     onQuoteClick: (String) -> Unit = {},
     onSearchClicked: (String) -> Unit = {},
     updateSearchQuery: (String) -> Unit = {}
@@ -53,16 +53,10 @@ fun PagingWithSearchContent(
             )
         },
         content = {
-            LazyColumn(content = {
-                items(data.itemCount) { index ->
-                    data[index]?.let {
-                        CardViewRow(
-                            it,
-                            onQuoteClick
-                        )
-                    }
-                }
-            })
+            PagingContent(
+                data = quotes,
+                onQuoteClick = onQuoteClick
+            )
         }
     )
 }
