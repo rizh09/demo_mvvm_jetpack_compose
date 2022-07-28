@@ -26,7 +26,7 @@ class QuoteResultPagingRepository
     }.flow
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getDataOfQuoteResultByKeywords(keywords: String? = null) = Pager(
+    fun getDataOfQuoteResultByKeywords(keywords: String?) = Pager(
         config = PagingConfig(pageSize = ITEMS_PER_PAGE),
         remoteMediator = QuoteRemoteMediator(
             db = db,
@@ -34,6 +34,8 @@ class QuoteResultPagingRepository
             quoteService = quoteService
         )
     ) {
-        db.quoteResultDao().getQuotResultPagingByKeywords(keywords = keywords ?: "")
+        //if keywords is not null, apply % as prefix and suffix, otherwise return ""
+        val matchRange = if (keywords != null) "%$keywords%" else ""
+        db.quoteResultDao().getQuotResultPagingByKeywords(keywords = matchRange)
     }.flow
 }
