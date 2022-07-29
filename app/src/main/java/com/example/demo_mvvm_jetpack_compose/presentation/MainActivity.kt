@@ -32,7 +32,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //init and schedule worker helper
-        WorkerHelper(context = this).createWorkRequest(timeDelayInHours = 6)
+        WorkerHelper(context = this).createWorkRequest(
+            repeatIntervalInHours = 6,
+            timeDelayInMinutes = 15
+        )
         setContent {
             MainApp()
         }

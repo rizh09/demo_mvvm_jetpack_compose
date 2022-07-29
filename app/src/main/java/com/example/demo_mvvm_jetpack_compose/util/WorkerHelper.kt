@@ -9,7 +9,7 @@ class WorkerHelper(private val context: Context) {
     //Two types of work request
     //PeriodicWorkRequest
     //OneTimeWorkRequest
-    fun createWorkRequest(timeDelayInHours: Long) {
+    fun createWorkRequest(repeatIntervalInHours: Long, timeDelayInMinutes: Long) {
 
         //example of OneTimeWorkRequest
 //        val myWorkRequest = OneTimeWorkRequestBuilder<WorkerManager>()
@@ -30,11 +30,11 @@ class WorkerHelper(private val context: Context) {
 
         //example of PeriodicWorkRequest
         val myWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES
+            repeatInterval = repeatIntervalInHours,
+            repeatIntervalTimeUnit = TimeUnit.HOURS
         )
             .setInitialDelay(
-                timeDelayInHours, TimeUnit.HOURS
+                timeDelayInMinutes, TimeUnit.MINUTES
             )
             .setConstraints(constants)
 //            .setInputData(
