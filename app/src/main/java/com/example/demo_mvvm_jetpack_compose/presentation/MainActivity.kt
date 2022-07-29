@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -66,14 +67,22 @@ fun MainApp() {
 @Composable
 fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
-        navController = navController, startDestination = MainScreen.QuoteTag.name,
+        navController = navController,
+        startDestination = MainScreen.SplashScreen.name,
         modifier = modifier
     ) {
+        //splash screen
+        composable(route = MainScreen.SplashScreen.name) {
+            SplashScreen(navController = navController)
+        }
         composable(route = MainScreen.QuoteTag.name) {
             val viewModel = hiltViewModel<QuoteTagViewModel>()
             ListScreen(viewModel = viewModel)
             { tagName ->
-                navigateToListQuotePagingFromTagPage(navController = navController, tagName = tagName)
+                navigateToListQuotePagingFromTagPage(
+                    navController = navController,
+                    tagName = tagName
+                )
             }
         }
 
@@ -115,7 +124,10 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             PagingScreen(
                 viewModel = viewModel,
                 onQuoteClick = { quoteID ->
-                    navigateToSingleQuoteFromRandomPage(navController = navController, quoteID = quoteID)
+                    navigateToSingleQuoteFromRandomPage(
+                        navController = navController,
+                        quoteID = quoteID
+                    )
                 }
             )
         }
@@ -171,7 +183,10 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
     }
 }
 
-private fun navigateToListQuotePagingFromTagPage(navController: NavHostController, tagName: String) {
+private fun navigateToListQuotePagingFromTagPage(
+    navController: NavHostController,
+    tagName: String
+) {
     //create an route with QuoteResultList/quoteID
     navController.navigate("${MainScreen.QuoteTag.name}/$tagName")
 }

@@ -7,8 +7,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class MainScreen(
-    val icon: ImageVector,
+    val icon: ImageVector? = null
 ) {
+    SplashScreen,
+    // all tag from quote api
     QuoteTag(
         icon = Icons.Filled.Info,
     ),
@@ -29,6 +31,7 @@ enum class MainScreen(
                 QuoteTag.name -> QuoteTag
                 RandomQuote.name -> RandomQuote
                 SearchQuote.name -> SearchQuote
+                SplashScreen.name -> SplashScreen
                 null -> QuoteTag
                 else -> throw IllegalArgumentException("Route $route is not recognized")
             }

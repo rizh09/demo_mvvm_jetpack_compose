@@ -128,4 +128,7 @@ dependencies {
     implementation "androidx.hilt:hilt-work:$work_version"
     // When using Kotlin.
     kapt "androidx.hilt:hilt-compiler:$work_version"
+
+    //animation
+    implementation 'com.airbnb.android:lottie-compose:5.2.0'
 }

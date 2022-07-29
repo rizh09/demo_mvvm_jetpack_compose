@@ -41,12 +41,14 @@ fun MainTabRow(
         Row(Modifier.selectableGroup()) {
             //generating tabs
             allScreens.forEach { screen ->
-                MainTab(
-                    text = screen.name,
-                    icon = screen.icon,
-                    onSelected = { onTabSelected(screen) },
-                    selected = currentScreen == screen
-                )
+                screen.icon?.let {
+                    MainTab(
+                        text = screen.name,
+                        icon = it,
+                        onSelected = { onTabSelected(screen) },
+                        selected = currentScreen == screen
+                    )
+                }
             }
         }
     }
