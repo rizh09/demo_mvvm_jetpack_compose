@@ -6,5 +6,6 @@ class Constant {
     companion object {
         const val BASE_URL = "https://quotable.io/"
         const val ITEMS_PER_PAGE = 10
+        const val CHANNEL_ID = "QuoteApp"
     }
 }

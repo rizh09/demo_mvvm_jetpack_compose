@@ -12,8 +12,6 @@ interface QuoteService {
     //it can perform its work without blocking and return the result as a list:
     //ref : https://kotlinlang.org/docs/flow.html#suspending-functions
 
-
-    //hard code page = 1, atm
     @GET("tags")
     suspend fun getTags(): Response<List<Tags.TagsItem>>
 
@@ -28,5 +26,6 @@ interface QuoteService {
         @Query("tags") keywords: String? = null
     ): Response<Quote>
 
-
+    @GET("random")
+    suspend fun getOneRandomQuote(): Response<Quote.Result>
 }

@@ -20,6 +20,7 @@ import com.example.demo_mvvm_jetpack_compose.presentation.ui.list.*
 import com.example.demo_mvvm_jetpack_compose.presentation.ui.theme.Demo_mvvm_jetpack_composeTheme
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteTagViewModel
+import com.example.demo_mvvm_jetpack_compose.util.WorkerHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -30,6 +31,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //init and schedule worker helper
+        WorkerHelper(context = this).createWorkRequest()
         setContent {
             MainApp()
         }
