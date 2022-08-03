@@ -1,5 +1,6 @@
 package com.example.demo_mvvm_jetpack_compose.presentation
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,7 +22,14 @@ import com.example.demo_mvvm_jetpack_compose.presentation.ui.theme.Demo_mvvm_jet
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteResultViewModel
 import com.example.demo_mvvm_jetpack_compose.presentation.viewmodel.QuoteTagViewModel
 import com.example.demo_mvvm_jetpack_compose.util.WorkerHelper
+import com.example.demo_mvvm_jetpack_compose.util.initAppCenter
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.Contexts
+import dagger.hilt.android.internal.Contexts.getApplication
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 
 //Hilt can provide dependencies to other Android classes that have the @AndroidEntryPoint annotation:
@@ -32,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initAppCenter(applicationContext = this.applicationContext)
         //init and schedule worker helper
         WorkerHelper(context = this).createWorkRequest(
             repeatIntervalInHours = 6,

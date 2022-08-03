@@ -131,4 +131,7 @@ dependencies {
 
     //animation
     implementation 'com.airbnb.android:lottie-compose:5.2.0'
+
+    implementation "com.microsoft.appcenter:appcenter-analytics:$appCenterSdkVersion"
+    implementation "com.microsoft.appcenter:appcenter-crashes:$appCenterSdkVersion"
 }

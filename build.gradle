@@ -9,6 +9,7 @@ buildscript {
         accompanistVersion = '0.23.0'
         work_version = "1.0.0"
         core_version = "1.6.0"
+        appCenterSdkVersion = '4.3.1'
     }
     dependencies {
         //hilt
