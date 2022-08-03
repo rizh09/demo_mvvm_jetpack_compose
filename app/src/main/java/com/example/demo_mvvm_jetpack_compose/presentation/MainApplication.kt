@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MainApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: NotificationWorker.CustomNotificationWorkerFactory
-
+    //test the auto build on appcenter
     override fun getWorkManagerConfiguration() =
         Configuration
             .Builder()
