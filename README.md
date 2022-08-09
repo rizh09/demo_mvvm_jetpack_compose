@@ -1,10 +1,8 @@
-An DEMO Andrid app written in kotlin
+You can find any famous quote in this app. 
 
 data source from : https://github.com/lukePeavey/quotable
 
-## Feature includes
-
-Library : 
+<b>Library used:</b> 
  - [Jetpack Compose](https://developer.android.com/jetpack/compose)
  - [Navigation](https://developer.android.com/topic/libraries/architecture/navigation)
  - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
@@ -15,7 +13,6 @@ Library :
  - [Room](https://developer.android.com/topic/libraries/architecture/room)
  - [Retrofit2](https://github.com/square/retrofit) (HTTP client)
 
-Repository pattern:
+<b>Repository pattern:</b>
 
 ![image](https://user-images.githubusercontent.com/78652079/183607418-1f38e7ea-8c84-42fa-87ed-5557f07dea52.png)
-
