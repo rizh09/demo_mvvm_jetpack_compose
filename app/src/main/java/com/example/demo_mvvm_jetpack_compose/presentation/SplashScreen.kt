@@ -3,10 +3,11 @@ package com.example.demo_mvvm_jetpack_compose.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -19,7 +20,14 @@ fun SplashScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.primary)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        colorResource(R.color.gradient_pink),
+                        colorResource(R.color.gradient_red)
+                    )
+                )
+            )
     ) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.jump_quote))
         val logoAnimationState =
