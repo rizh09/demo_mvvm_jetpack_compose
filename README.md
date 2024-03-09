@@ -1,3 +1,4 @@
+This is a self-learn project.
 You can find any famous quote in this app. 
 
 data source from : https://github.com/lukePeavey/quotable
